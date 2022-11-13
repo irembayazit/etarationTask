@@ -28,7 +28,8 @@ const Record = ({navigation}) => {
   const dispatch = useDispatch();
 
   const addRecord = async () => {
-    const data = {id:1, name: name, job: job, about: about, avatar: image};
+    const id = Math.floor(Math.random() * 100000) + 100000;
+    const data = {id:id, name: name, job: job, about: about, avatar: image};
     dispatch(addItems(data))
     await navigation.navigate('Simpsons')
   };
