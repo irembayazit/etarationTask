@@ -1,53 +1,54 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const INITIAL_STATE = [];
+export const fetchData = createAsyncThunk('fetchData',async () => {
+  const response = await axios.get(
+    'https://5fc9346b2af77700165ae514.mockapi.io/simpsons'
+  );
+  response.data.map((item) => {
+    initialState.data.push(item)
+  })
+  return response.data;
+})
+fetchData();
 
-axios
-.get('https://5fc9346b2af77700165ae514.mockapi.io/simpsons')
-.then(response => {
-  //AsyncStorage.setItem('dataRecord', JSON.stringify(response.data));
-  response.data.map((item) => 
-    INITIAL_STATE.push(item)
-  )
-});
+const initialState = {
+  data:[]
+}
 
-const itemReducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case 'ADD_ITEMS':
-      return[...state,action.payload] ;
-      break;
-
-    case 'LIST_ITEMS':
-      return state ;
-      break;
-    
-    case 'REMOVE_ITEM':
-      return state.filter((item) => item.id != action.id);
-      break;
-      
-    case 'ITEM_UP':
-      if(state[action.index - 1] != null){
-        const up = state[action.index - 1]
-        state[action.index - 1] = state[action.index]
-        state[action.index] = up
+export const listSlice = createSlice({
+  name:"itemList",
+  initialState,
+  reducers:{
+    addItem: (state, action) => {
+      state.data.push(action.payload)
+    },
+    removeItem: (state, action) => {
+      state.data = state.data.filter((item) => item.id != action.payload);
+    },
+    upItem: (state, action) => {
+      if(state.data[action.payload - 1] != null){
+        const up = state.data[action.payload - 1]
+        state.data[action.payload - 1] = state.data[action.payload]
+        state.data[action.payload] = up
       }
-      return [...state];
-      break;
-    
-    case 'ITEM_DOWN':
-      if(state[action.index + 1] != null){
-        const down = state[action.index + 1]
-        state[action.index + 1] = state[action.index]
-        state[action.index] = down
+      state;
+    },
+    downItem: (state, action) => {
+      if(state.data[action.payload + 1] != null){
+        const down = state.data[action.payload + 1]
+        state.data[action.payload + 1] = state.data[action.payload]
+        state.data[action.payload] = down
       }
-      return [...state];
-      break;
+      state;
+    },
+  },
+  // extraReducers:(builder) => {
+  //   builder.addCase(fetchData.fulfilled, (state, action) => {
+  //     state.data = action.payload;
+  //   })
+  // }
+})
 
-    default:
-      return state;
-      break;
-  }
-};
-
-
-export default itemReducer;
+export const { addItem, removeItem, upItem, downItem } = listSlice.actions;
+export default listSlice.reducer;

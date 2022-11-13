@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItem, Up, Down } from '../../redux/actions/itemAction';
+import { removeItem, upItem, downItem } from '../../redux/reducers/itemReducer';
 
 const SimpsonsList = ({item, index, navigation}) => {
   const dispatch = useDispatch();
@@ -19,11 +19,11 @@ const SimpsonsList = ({item, index, navigation}) => {
   };
 
   const up = index => {
-    dispatch(Up(index))
+    dispatch(upItem(index))
   };
 
   const down = index => {
-    dispatch(Down(index))
+    dispatch(downItem(index))
   };
 
   const Detail = (item) => {

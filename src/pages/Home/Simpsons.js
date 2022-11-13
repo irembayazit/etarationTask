@@ -7,16 +7,18 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 import SimpsonsList from './SimpsonsList';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux'; 
-import { addItems, listItems } from '../../redux/actions/itemAction'
+import { fetchData } from '../../redux/reducers/itemReducer';
 
 const Simpsons = ({navigation}) => {
-  const dispatch = useDispatch();
-  const state = useSelector(state => state.list);
+  const state = useSelector((state) => state.itemList);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    //dispatch(fetchData())
+  },[]);
 
   const RenderItem = ({item, index}) => {
     return <SimpsonsList item={item} index={index} navigation={navigation} />;
@@ -30,7 +32,7 @@ const Simpsons = ({navigation}) => {
     <>
       <SafeAreaView style={{flex: 1}}>
         <FlatList
-          data={state} 
+          data={state.data} 
           renderItem={RenderItem}
           keyExtractor={item => item.id}
         />

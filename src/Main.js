@@ -7,15 +7,18 @@ import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
 import SplashScreen from 'react-native-splash-screen'
 import RNBootSplash from "react-native-bootsplash";
-import Store from './redux/store';
+import {store} from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore, persistReducer } from 'redux-persist';
 
 function Main() {
+  let persistor = persistStore(store)
+
+
   const Stack = createStackNavigator();
   SplashScreen.hide();
   RNBootSplash.hide();
 
-  const {persistor, store} = Store();
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

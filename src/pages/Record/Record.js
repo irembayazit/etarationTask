@@ -11,7 +11,8 @@ import React, {useRef, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 import {addItems, listItems} from '../../redux/actions/itemAction'
-import { keyBy } from 'lodash';
+import { fetchData,addItem } from '../../redux/reducers/itemReducer';
+
 
 const Record = ({navigation}) => {
   const nameRef = useRef();
@@ -30,7 +31,7 @@ const Record = ({navigation}) => {
   const addRecord = async () => {
     const id = Math.floor(Math.random() * 100000) + 100000;
     const data = {id:id, name: name, job: job, about: about, avatar: image};
-    dispatch(addItems(data))
+    dispatch(addItem(data))
     await navigation.navigate('Simpsons')
   };
 
